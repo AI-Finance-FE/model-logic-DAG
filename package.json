@@ -1,8 +1,7 @@
 {
   "name": "model-logic-dag",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "可用于模型、服务链式调用配置的DAG工具",
-  "type": "module",
   "files": [
     "dist",
     "lib"
