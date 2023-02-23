@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-22 09:31:25
+ * @Last Modified time: 2023-02-23 16:36:39
  */
 <template>
   <div
@@ -66,6 +66,10 @@ export default {
       default() {
         return []
       }
+    },
+    linksLimit: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -238,13 +242,16 @@ export default {
               return false
             }
 
-            const sourceGroupId = sourceCell.data.groupId
-            const targetGroupId = targetCell.data.groupId
-            return this.links.some(
-              link => {
-                return link.source === sourceGroupId && link.target === targetGroupId
-              }
-            )
+            if (this.linksLimit) {
+              const sourceGroupId = sourceCell.data.groupId
+              const targetGroupId = targetCell.data.groupId
+              return this.links.some(
+                link => {
+                  return link.source === sourceGroupId && link.target === targetGroupId
+                }
+              )
+            } 
+            return true
           }
         }
       })
