@@ -1,6 +1,6 @@
 {
   "name": "model-logic-dag",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "可用于模型、服务链式调用配置的DAG工具",
   "type": "module",
   "files": [
@@ -13,8 +13,7 @@
   "jsdelivr": "dist/index.js",
   "exports": {
     ".": {
-      "import": "./es/src/index.js",
-      "require": "./dist/index.umd.cjs"
+      "import": "./lib/index.js"
     }
   },
   "scripts": {
@@ -61,6 +60,7 @@
     "@antv/x6-plugin-selection": "^2.1.5",
     "@antv/x6-plugin-snapline": "2.1.6",
     "@antv/x6-plugin-stencil": "2.0.2",
-    "@antv/x6-vue-shape": "2.0.9"
+    "@antv/x6-vue-shape": "2.0.9",
+    "model-logic-dag": "^0.0.2"
   }
 }

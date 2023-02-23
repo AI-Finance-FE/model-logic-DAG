@@ -7,12 +7,14 @@
       ref="modelDAG"
       :stencils="stencils"
       :links="links"
+      linksLimit
     ></ModelDAG>
     <button @click="handleExport">导出</button>
   </div>
 </template>
 <script>
-import ModelDAG from '@/'
+// import ModelDAG from '@/'
+import ModelDAG from 'model-logic-DAG'
 export default {
   name: 'App',
   components: { ModelDAG },
