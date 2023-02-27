@@ -7,9 +7,10 @@
       ref="modelDAG"
       :stencils="stencils"
       :links="links"
+      title="现金违规放置检测"
       linksLimit
     ></ModelDAG>
-    <button @click="handleExport">导出</button>
+    <!-- <button @click="handleExport">导出</button> -->
   </div>
 </template>
 <script>

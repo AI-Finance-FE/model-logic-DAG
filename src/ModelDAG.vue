@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-27 16:26:59
+ * @Last Modified time: 2023-02-27 16:31:57
  */
 <template>
   <div
@@ -13,6 +13,7 @@
       :graph="graph"
       :dnd="dnd"
       :stencils="stencils"
+      :title="title"
     ></Stencil>
     <div
       id="container"
@@ -55,21 +56,37 @@ export default {
       type: [Object, Boolean],
       default: false
     },
+    /**
+     * 基础原子数据
+     */
     stencils: {
       type: Array,
       default() {
         return []
       }
     },
+    /**
+     * 边的限制关系
+     */
     links: {
       type: Array,
       default() {
         return []
       }
     },
+    /**
+     * 边的限制关系是否生效
+     */
     linksLimit: {
       type: Boolean,
       default: true
+    },
+    /**
+     * 工具栏title
+     */
+    title: {
+      type: String,
+      default: ''
     }
   },
   data() {
