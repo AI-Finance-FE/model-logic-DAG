@@ -13,8 +13,8 @@
   </div>
 </template>
 <script>
-// import ModelDAG from '@/'
-import ModelDAG from 'model-logic-DAG'
+import ModelDAG from '@/'
+// import ModelDAG from 'model-logic-DAG'
 export default {
   name: 'App',
   components: { ModelDAG },

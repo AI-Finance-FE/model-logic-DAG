@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-23 16:36:39
+ * @Last Modified time: 2023-02-27 16:26:59
  */
 <template>
   <div
@@ -32,7 +32,7 @@ import { Selection } from '@antv/x6-plugin-selection'
 import ModelNode from '@/components/nodes/Model'
 import BeginNode from '~/src/components/nodes/Begin.vue'
 // config
-import { GRID_CONFIG } from '@/config/default'
+import { GRID_CONFIG, BACKGROUND_CONFIG, PORTS_GROUPS, DEFAULT_COLOR } from '@/config/default'
 // components
 import Stencil from '@/components/Stencil'
 export default {
@@ -114,48 +114,17 @@ export default {
         // }
         component: ModelNode,
         ports: {
-          groups: {
-            right: {
-              position: 'right',
-              attrs: {
-                circle: {
-                  magnet: true,
-                  stroke: '#8f8f8f',
-                  r: 5
-                }
-              }
-            },
-            left: {
-              position: 'left',
-              attrs: {
-                circle: {
-                  magnet: true,
-                  stroke: '#8f8f8f',
-                  r: 5
-                }
-              }
-            }
-          }
+          groups: PORTS_GROUPS
         }
       })
+
       register({
         shape: 'begin-node',
         width: 180,
         height: 48,
         component: BeginNode,
         ports: {
-          groups: {
-            right: {
-              position: 'right',
-              attrs: {
-                circle: {
-                  magnet: true,
-                  stroke: '#8f8f8f',
-                  r: 5
-                }
-              }
-            }
-          }
+          groups: PORTS_GROUPS
         }
       })
     },
@@ -163,11 +132,14 @@ export default {
      * 初始化画布
      */
     initGraph() {
+      this.initHighlighter()
+
       const graph = new Graph({
         container: this.$refs.container,
         autoResize: true,
         scaling: { min: 0.1, max: 16 },
         background: {
+          ...BACKGROUND_CONFIG,
           ...this.background
         },
         panning: true,
@@ -176,39 +148,31 @@ export default {
         highlighting: {
           // 连接桩可以被连接时在连接桩外围围渲染一个包围框
           magnetAvailable: {
-            name: 'stroke',
-            args: {
-              attrs: {
-                fill: '#fff',
-                stroke: '#A4DEB1',
-                strokeWidth: 4
-              }
-            }
+            name: 'availableHighlight'
           },
           // 连接桩吸附连线时在连接桩外围围渲染一个包围框
           magnetAdsorbed: {
-            name: 'stroke',
+            name: 'adsorbedHighlight',
             args: {
               attrs: {
-                fill: '#fff',
-                stroke: '#31d0c6',
-                strokeWidth: 4
+                strokeWidth: 1,
+                stroke: 'blue'
               }
             }
           }
         },
         connecting: {
           highlight: true,
-          // createEdge() {
-          //   return this.createEdge({
-          //     attrs: {
-          //       line: {
-          //         stroke: '#8f8f8f',
-          //         strokeWidth: 1
-          //       }
-          //     }
-          //   })
-          // },
+          createEdge() {
+            return this.createEdge({
+              attrs: {
+                line: {
+                  stroke: DEFAULT_COLOR.gray,
+                  strokeWidth: 2
+                }
+              }
+            })
+          },
           router: 'er',
           connector: 'rounded',
           allowBlank: false,
@@ -250,7 +214,7 @@ export default {
                   return link.source === sourceGroupId && link.target === targetGroupId
                 }
               )
-            } 
+            }
             return true
           }
         }
@@ -289,8 +253,8 @@ export default {
         shape: 'begin-node',
         x: 40,
         y: this.graphSize.height / 2,
-        width: 100,
-        height: 40,
+        width: 140,
+        height: 80,
         data: {
           label: '开始',
           type: 'begin-node'
@@ -303,6 +267,14 @@ export default {
             }
           ]
         }
+      })
+
+      /**
+       * 监听边的连接建立时
+       */
+      graph.on('edge:connected', ({ edge }) => {
+        // 线被连上时设置线和两边链接桩为校验未通过的颜色
+        this.setEdgeAndPortColor(edge, DEFAULT_COLOR.red)
       })
 
       /**
@@ -342,6 +314,62 @@ export default {
     },
 
     /**
+     * 初始化高亮器
+     */
+    initHighlighter() {
+      const availableHighlight = {
+        highlight(cellView, magnet) {
+          magnet.parentElement.classList.add('port-magnet-available-highlight')
+        },
+
+        unhighlight(cellView, magnet) {
+          magnet.parentElement.classList.remove('port-magnet-available-highlight')
+        }
+      }
+
+      const adsorbedHighlight = {
+        highlight(cellView, magnet, options) {
+          magnet.parentElement.classList.add('port-magnet-adsorbed-highlight')
+        },
+
+        unhighlight(cellView, magnet) {
+          magnet.parentElement.classList.remove('port-magnet-adsorbed-highlight')
+        }
+      }
+      Graph.registerHighlighter('availableHighlight', availableHighlight, true)
+      Graph.registerHighlighter('adsorbedHighlight', adsorbedHighlight, true)
+    },
+
+    /**
+    * @param { Object } edge object 边
+    * @param { String } color string 颜色
+    * @description 设置边以及边两边的链接桩的颜色
+    */
+    setEdgeAndPortColor(edge, color) {
+      edge.setAttrs({
+        line: {
+          stroke: color
+        }
+      })
+      const sourceNode = edge.getSourceNode()
+      const targetNode = edge.getTargetNode()
+      const sourcePortId = edge.getSourcePortId()
+      const targetPortId = edge.getTargetPortId()
+      sourceNode.setPortProp(sourcePortId, 'attrs/inside', {
+        fill: color
+      })
+      targetNode.setPortProp(targetPortId, 'attrs/inside', {
+        fill: color
+      })
+    },
+
+    /**
+     * 以下开始为组件暴露至外部调用方法
+     * 以下开始为组件暴露至外部调用方法
+     * 以下开始为组件暴露至外部调用方法
+     */
+
+    /**
      * 获取画布json
      */
     toGraphJSON() {
@@ -375,14 +403,63 @@ export default {
         }
       )
       return data
+    },
+    /**
+     * @param { Object } edge 边
+     * @param { String } status 状态  success | fail
+     */
+    setEdgeStatus(edge, status) {
+      let color
+      switch (status) {
+        case 'success':
+          color = DEFAULT_COLOR.green
+          break
+        case 'fail':
+          color = DEFAULT_COLOR.red
+          break
+        default:
+          color = DEFAULT_COLOR.gray
+          break
+      }
+      this.setEdgeAndPortColor(edge, color)
     }
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .DAG-warp {
   display: flex;
   width: 100%;
   height: 100%;
+}
+</style>
+
+<style lang="scss">
+@import '@/styles/var.scss';
+
+.port-magnet-available-highlight {
+  .outside {
+    fill: #cbeecb !important;
+    stroke: #cbeecb !important;
+  }
+}
+
+.port-magnet-available-highlight {
+  .inside {
+    fill: #17b573 !important;
+  }
+}
+
+.port-magnet-adsorbed-highlight {
+  .outside {
+    fill: #b4c4eb !important;
+    stroke: #b4c4eb !important;
+  }
+}
+
+.port-magnet-adsorbed-highlight {
+  .inside {
+    fill: $--default-color !important;
+  }
 }
 </style>

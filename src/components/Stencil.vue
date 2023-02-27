@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-21 17:16:20
+ * @Last Modified time: 2023-02-27 09:34:52
  * @Description: 工具栏
  */
 <template>
@@ -67,44 +67,28 @@ export default {
   },
   methods: {
     startDrag(e, stencilGroup, stencil) {
-      const type = 'rect'
-      const node =
-        type === 'rect'
-          ? this.graph.createNode({
-            shape: 'model-node',
-            x: 100,
-            y: 100,
-            attrs: commonAttrs,
-            data: {
-              label: stencil.label,
-              groupId: stencilGroup.id
+      const node = this.graph.createNode({
+        shape: 'model-node',
+        width: 140,
+        height: 80,
+        attrs: commonAttrs,
+        data: {
+          label: stencil.label,
+          groupId: stencilGroup.id
+        },
+        ports: {
+          items: [
+            {
+              id: 'port_1',
+              group: 'right'
             },
-            ports: {
-              items: [
-                {
-                  id: 'port_1',
-                  group: 'right'
-                },
-                {
-                  id: 'port_2',
-                  group: 'left'
-                }
-              ]
+            {
+              id: 'port_2',
+              group: 'left'
             }
-          })
-          : this.graph.createNode({
-            width: 60,
-            height: 60,
-            shape: 'circle',
-            label: 'Circle',
-            attrs: {
-              body: {
-                stroke: '#8f8f8f',
-                strokeWidth: 1,
-                fill: '#fff'
-              }
-            }
-          })
+          ]
+        }
+      })
       this.dnd.start(node, e)
     }
   }
