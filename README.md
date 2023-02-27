@@ -82,6 +82,13 @@ export default {
 ```
 一组```link```包含一个```source```和一个```target```，当关系存在于```links```中时，连线关系才可以被建立，否则无法连接元素
 
+### Events
+
+| 事件名   |  说明  |  会调参数  |
+|  ----  | ----  | ----  |
+| link-click  | 点击关系线时触发  |  (sourceNode, targetNode)  |
+| node-click  | 点击节点时触发 | (inputNodes, outputNodes) |
+
 ### Methods
 
 | 方法名   |  说明  |  参数  |
