@@ -1,7 +1,10 @@
 {
   "name": "model-logic-dag",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "可用于模型、服务链式调用配置的DAG工具",
+  "keywords": [
+    "DAG"
+  ],
   "files": [
     "dist",
     "lib"
@@ -20,7 +23,6 @@
     "build": "rm -rf lib dist && vite build",
     "preview": "vite preview"
   },
-  "keywords": [],
   "author": "AI-Finance-FE",
   "license": "MIT",
   "repository": {
