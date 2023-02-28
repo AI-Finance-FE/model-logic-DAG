@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-27 16:31:57
+ * @Last Modified time: 2023-02-28 09:28:44
  */
 <template>
   <div
@@ -368,16 +368,20 @@ export default {
           stroke: color
         }
       })
-      const sourceNode = edge.getSourceNode()
-      const targetNode = edge.getTargetNode()
-      const sourcePortId = edge.getSourcePortId()
-      const targetPortId = edge.getTargetPortId()
-      sourceNode.setPortProp(sourcePortId, 'attrs/inside', {
-        fill: color
-      })
-      targetNode.setPortProp(targetPortId, 'attrs/inside', {
-        fill: color
-      })
+      /**
+       * 当前版本暂时不修改连接桩颜色
+       * 因为多条边对应同一个连接桩
+       */
+      // const sourceNode = edge.getSourceNode()
+      // const targetNode = edge.getTargetNode()
+      // const sourcePortId = edge.getSourcePortId()
+      // const targetPortId = edge.getTargetPortId()
+      // sourceNode.setPortProp(sourcePortId, 'attrs/inside', {
+      //   fill: color
+      // })
+      // targetNode.setPortProp(targetPortId, 'attrs/inside', {
+      //   fill: color
+      // })
     },
 
     /**
