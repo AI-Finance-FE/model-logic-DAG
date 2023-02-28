@@ -41,7 +41,7 @@ export default {
 
 #### stencils示例
 
-```json
+```
 [
   {
     groupName: '原子能力',
@@ -72,7 +72,7 @@ export default {
 
 #### links示例
 
-```json
+```
 [
   {
     target: '2',

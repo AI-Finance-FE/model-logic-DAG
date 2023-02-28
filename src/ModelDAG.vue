@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-28 09:31:30
+ * @Last Modified time: 2023-02-28 16:26:13
  */
 <template>
   <div
@@ -31,7 +31,8 @@ import { Dnd } from '@antv/x6-plugin-dnd'
 import { Selection } from '@antv/x6-plugin-selection'
 // node
 import ModelNode from '@/components/nodes/Model'
-import BeginNode from '~/src/components/nodes/Begin.vue'
+import BeginNode from '~/src/components/nodes/Begin'
+import RhombusNode from '~/src/components/nodes/Rhombus'
 // config
 import { GRID_CONFIG, BACKGROUND_CONFIG, PORTS_GROUPS, DEFAULT_COLOR } from '@/config/default'
 // components
@@ -115,6 +116,7 @@ export default {
      * 注册所有自定义节点
      */
     registerNodes() {
+      //注册原子节点
       register({
         shape: 'model-node',
         width: 180,
@@ -135,11 +137,23 @@ export default {
         }
       })
 
+      //注册开始节点
       register({
         shape: 'begin-node',
         width: 180,
         height: 48,
         component: BeginNode,
+        ports: {
+          groups: PORTS_GROUPS
+        }
+      })
+
+      //注册菱形节点
+      register({
+        shape: 'rhombus-node',
+        width: 160,
+        height: 90,
+        component: RhombusNode,
         ports: {
           groups: PORTS_GROUPS
         }
@@ -203,11 +217,15 @@ export default {
             targetPort
           }) => {
             /**
+             * 元素左、上的连接桩为输入点
+             * 元素右、下的连接桩为输出点
+             */
+            /**
              * 结束节点不能为输出port 
              */
             const targetPortGroup = targetCell.ports.items.find(p => p.id === targetPort)?.group
-            if (targetPortGroup === 'right') {
-              return
+            if (targetPortGroup === 'right' || targetPortGroup === 'bottom') {
+              return false
             }
             /**
              * 开始节点为开始

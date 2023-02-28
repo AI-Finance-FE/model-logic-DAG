@@ -91,5 +91,15 @@ export const PORTS_GROUPS = {
     position: 'right',
     markup: portsMarkup,
     attrs: portsAttrs
+  },
+  bottom: {
+    position: 'bottom',
+    markup: portsMarkup,
+    attrs: portsAttrs
+  },
+  top: {
+    position: 'top',
+    markup: portsMarkup,
+    attrs: portsAttrs
   }
 }

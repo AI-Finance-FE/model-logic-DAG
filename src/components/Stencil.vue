@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-27 17:28:03
+ * @Last Modified time: 2023-02-28 15:40:39
  * @Description: 工具栏
  */
 <template>
@@ -46,13 +46,6 @@
 </template>
 <script>
 import * as X6 from '@antv/x6'
-const commonAttrs = {
-  body: {
-    fill: '#fff',
-    stroke: '#8f8f8f',
-    strokeWidth: 1
-  }
-}
 export default {
   name: 'Stencil',
   props: {
@@ -91,11 +84,34 @@ export default {
   },
   methods: {
     startDrag(e, stencilGroup, stencil) {
-      const node = this.graph.createNode({
+      const node = stencil.label === '逻辑判断' ? this.graph.createNode({
+        shape: 'rhombus-node',
+        width: 160,
+        height: 90,
+        data: {
+          label: stencil.label,
+          groupId: stencilGroup.id
+        },
+        ports: {
+          items: [
+            {
+              id: 'port_1',
+              group: 'left'
+            },
+            {
+              id: 'port_2',
+              group: 'right'
+            },
+            {
+              id: 'port_3',
+              group: 'bottom'
+            }
+          ]
+        }
+      }) : this.graph.createNode({
         shape: 'model-node',
         width: 140,
         height: 80,
-        attrs: commonAttrs,
         data: {
           label: stencil.label,
           groupId: stencilGroup.id
@@ -182,7 +198,7 @@ export default {
         clip-path: polygon(0 0, 0% 100%, 100% 50%);
         margin-right: 10px;
         cursor: pointer;
-        transition: all .3s linear;
+        transition: all 0.3s linear;
       }
 
       .expand {
@@ -193,7 +209,7 @@ export default {
     .items-wrap {
       display: flex;
       flex-wrap: wrap;
-      transition: max-height .3s linear;
+      transition: max-height 0.3s linear;
 
       .item {
         background: #fbfbfb;

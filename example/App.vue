@@ -51,6 +51,10 @@ export default {
         {
           target: '2',
           source: '1'
+        },
+        {
+          target: '1',
+          source: '2'
         }
       ]
     }
