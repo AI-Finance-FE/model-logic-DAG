@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-28 09:28:44
+ * @Last Modified time: 2023-02-28 09:31:30
  */
 <template>
   <div
@@ -428,6 +428,7 @@ export default {
     /**
      * @param { Object } edge 边
      * @param { String } status 状态  success | fail
+     * @description 设置边的状态 status也可以直接传入颜色设置为边的颜色
      */
     setEdgeStatus(edge, status) {
       let color
@@ -439,7 +440,7 @@ export default {
           color = DEFAULT_COLOR.red
           break
         default:
-          color = DEFAULT_COLOR.gray
+          color = status || DEFAULT_COLOR.gray
           break
       }
       this.setEdgeAndPortColor(edge, color)

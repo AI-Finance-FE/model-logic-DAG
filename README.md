@@ -95,3 +95,4 @@ export default {
 |  ----  | ----  | ----  |
 | toGraphJSON  | 获取画布数据，用于还原画布  |  - |
 | getData  | 获取业务数据 | - |
+| setEdgeStatus  | 设置边的状态 | (edge: 边, status: 'success' \| 'fail') 也可以直接传入颜色来设置 |
