@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-28 15:40:39
+ * @Last Modified time: 2023-03-01 14:23:19
  * @Description: 工具栏
  */
 <template>
@@ -145,6 +145,8 @@ export default {
   width: 220px;
   padding: 24px 20px;
   overflow-y: auto;
+  box-sizing: content-box;
+  background-color: #ffffff;
 
   .title {
     font-size: 18px;
