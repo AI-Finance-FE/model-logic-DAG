@@ -23,7 +23,7 @@ npm i model-logic-dag --save
 ```
 
 ```js
-import ModelDAG from 'model-logic-DAG'
+import ModelDAG from 'model-logic-dag'
 export default {
   components: { ModelDAG }
 }
