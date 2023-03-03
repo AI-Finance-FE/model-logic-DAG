@@ -9,6 +9,7 @@
       :links="links"
       title="现金违规放置检测"
       linksLimit
+      @node-click="handleNodeClick"
     ></ModelDAG>
     <button @click="handleExport">导出</button>
   </div>
@@ -28,7 +29,8 @@ export default {
           id: '1',
           items: [
             {
-              label: '人头检测'
+              label: '人头检测',
+              id: 1
             },
             {
               label: '现金检测'
@@ -63,6 +65,9 @@ export default {
   methods: {
     handleExport() {
       console.log(this.$refs.modelDAG.getData())
+    },
+    handleNodeClick({ node }) {
+      console.log(node)
     }
   }
 }

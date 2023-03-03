@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-03 17:01:44
+ * @Last Modified time: 2023-03-03 17:18:46
  * @Description: 工具栏
  */
 <template>
@@ -84,14 +84,15 @@ export default {
   },
   methods: {
     startDrag(e, stencilGroup, stencil) {
+      const data = {
+        ...stencil,
+        groupId: stencilGroup.id
+      }
       const node = stencil.label === '逻辑判断' ? this.graph.createNode({
         shape: 'rhombus-node',
         width: 160,
         height: 90,
-        data: {
-          ...stencil,
-          groupId: stencilGroup.id
-        },
+        data,
         ports: {
           items: [
             {
@@ -112,10 +113,7 @@ export default {
         shape: 'model-node',
         width: 140,
         height: 80,
-        data: {
-          label: stencil.label,
-          groupId: stencilGroup.id
-        },
+        data,
         ports: {
           items: [
             {
