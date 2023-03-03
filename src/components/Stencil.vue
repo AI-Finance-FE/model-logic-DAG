@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-02 16:30:11
+ * @Last Modified time: 2023-03-03 17:01:44
  * @Description: 工具栏
  */
 <template>
@@ -89,7 +89,7 @@ export default {
         width: 160,
         height: 90,
         data: {
-          label: stencil.label,
+          ...stencil,
           groupId: stencilGroup.id
         },
         ports: {
