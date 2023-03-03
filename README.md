@@ -84,7 +84,7 @@ export default {
 
 ### Events
 
-| 事件名   |  说明  |  会调参数  |
+| 事件名   |  说明  |  回调参数  |
 |  ----  | ----  | ----  |
 | link-click  | 点击关系线时触发  |  (sourceNode, targetNode)  |
 | node-click  | 点击节点时触发 | (inputNodes, outputNodes) |
@@ -94,5 +94,6 @@ export default {
 | 方法名   |  说明  |  参数  |
 |  ----  | ----  | ----  |
 | toGraphJSON  | 获取画布数据，用于还原画布  |  - |
+| fromGraphJSON  | 导入画布数据，还原画布  |  - |
 | getData  | 获取业务数据 | - |
 | setEdgeStatus  | 设置边的状态 | (edge: 边, status: 'success' \| 'fail') 也可以直接传入颜色来设置 |

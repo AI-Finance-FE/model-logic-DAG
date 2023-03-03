@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-02-28 16:26:13
+ * @Last Modified time: 2023-03-03 14:47:07
  */
 <template>
   <div
@@ -317,9 +317,10 @@ export default {
        * 返回线段的输入和输出节点
        */
       graph.on('edge:click', (data) => {
+        const { edge } = data
         const sourceNode = data.edge.getSourceNode()
         const targetNode = data.edge.getTargetNode()
-        this.$emit('link-click', sourceNode, targetNode)
+        this.$emit('link-click', { edge, sourceNode, targetNode })
       })
 
       /**
@@ -344,7 +345,7 @@ export default {
             targetNode.id === clickNodeId && inputNodes.push(sourceNode)
           }
         )
-        this.$emit('node-click', inputNodes, outputNodes)
+        this.$emit('node-click', { node, inputNodes, outputNodes })
       })
     },
 
@@ -413,6 +414,13 @@ export default {
      */
     toGraphJSON() {
       return this.graph.toJSON()
+    },
+    /**
+     * @param { Object } json 导入画布的数据
+     * @description 导入画布数据
+     */
+    fromGraphJSON(json) {
+      this.graph.fromJSON(json)
     },
     /**
      * 获取业务数据
