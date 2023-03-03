@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-03 14:47:07
+ * @Last Modified time: 2023-03-03 16:01:49
  */
 <template>
   <div
@@ -432,14 +432,13 @@ export default {
 
       nodes.forEach(
         node => {
-          let nodeResult = data.find(d => d.index === node.data.label)
           const nodeInfo = {
             index: node.data.label,
             depends: [],
             params: {}
           }
-          nodeResult = !nodeResult && data.push(nodeInfo) && nodeInfo
-
+          const nodeResult = data.find(d => d.index === node.data.label) || (data.push(nodeInfo) && nodeInfo)
+          // nodeResult = nodeResult && data.push(nodeInfo) && nodeInfo
           edges.filter(
             edge => {
               const targetNode = edge.getTargetNode()
