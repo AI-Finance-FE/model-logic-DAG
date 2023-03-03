@@ -36,13 +36,6 @@ export default defineConfig({
       fileName: (fileName, entryName) => `${entryName}.js`
     },
     outDir: resolve(__dirname, 'lib'),
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
     sourcemap: true,
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖

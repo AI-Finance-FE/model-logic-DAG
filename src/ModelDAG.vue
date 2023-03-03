@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-03 16:01:49
+ * @Last Modified time: 2023-03-03 16:35:59
  */
 <template>
   <div
@@ -429,7 +429,8 @@ export default {
       const edges = this.graph.getEdges()
       const nodes = this.graph.getNodes()
       const data = []
-
+      const a = edges.test
+      console.log(a.length)
       nodes.forEach(
         node => {
           const nodeInfo = {

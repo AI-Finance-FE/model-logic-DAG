@@ -14,7 +14,8 @@
   </div>
 </template>
 <script>
-import ModelDAG from '@/'
+// import ModelDAG from '@/'
+import ModelDAG from './../lib'
 // import ModelDAG from 'model-logic-DAG'
 export default {
   name: 'App',
