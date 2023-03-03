@@ -86,8 +86,8 @@ export default {
 
 | 事件名   |  说明  |  回调参数  |
 |  ----  | ----  | ----  |
-| link-click  | 点击关系线时触发  |  (sourceNode, targetNode)  |
-| node-click  | 点击节点时触发 | (inputNodes, outputNodes) |
+| link-click  | 点击关系线时触发  |  ({link, sourceNode, targetNode})  |
+| node-click  | 点击节点时触发 | ({node, inputNodes, outputNodes}) |
 
 ### Methods
 
