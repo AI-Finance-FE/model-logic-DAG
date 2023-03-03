@@ -94,6 +94,6 @@ export default {
 | 方法名   |  说明  |  参数  |
 |  ----  | ----  | ----  |
 | toGraphJSON  | 获取画布数据，用于还原画布  |  - |
-| fromGraphJSON  | 导入画布数据，还原画布  |  - |
+| fromGraphJSON  | 导入画布数据，还原画布  |  cells: (Node.Metadata | Edge.Metadata)[] 数据来源一般为```toGraphJSON```中获取的数据 |
 | getData  | 获取业务数据 | - |
 | setEdgeStatus  | 设置边的状态 | (edge: 边, status: 'success' \| 'fail') 也可以直接传入颜色来设置 |
