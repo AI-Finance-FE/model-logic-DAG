@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-03 16:54:02
+ * @Last Modified time: 2023-03-08 10:02:37
  */
 <template>
   <div
@@ -24,22 +24,19 @@
 </template>
 <script>
 // antv
-import { Graph } from '@antv/x6'
-import { Snapline } from '@antv/x6-plugin-snapline'
-import { register } from '@antv/x6-vue-shape'
-import { Dnd } from '@antv/x6-plugin-dnd'
-import { Selection } from '@antv/x6-plugin-selection'
-// node
-import ModelNode from '@/components/nodes/Model'
-import BeginNode from '~/src/components/nodes/Begin'
-import RhombusNode from '~/src/components/nodes/Rhombus'
-// config
-import { GRID_CONFIG, BACKGROUND_CONFIG, PORTS_GROUPS, DEFAULT_COLOR } from '@/config/default'
+import { DagreLayout } from '@antv/layout'
 // components
 import Stencil from '@/components/Stencil'
+// mixins
+// !避免代码过度混乱mixin谨慎使用mixin！！！
+import createNode from '@/mixins/createNode'
+import initGraph from '@/mixins/initGraph'
+// config
+import { DEFAULT_COLOR } from '@/config/default'
 export default {
   name: 'ModelDAG',
   components: { Stencil },
+  mixins: [createNode, initGraph],
   props: {
     /**
      * 画布背景色
@@ -105,277 +102,13 @@ export default {
     }
   },
   mounted() {
-    this.registerNodes()
+    /**
+     * 初始化画布
+     * !此方法来源于mixins/initGraph.js
+     */
     this.initGraph()
   },
   methods: {
-    handleMyEvent(data) {
-      console.log(data)
-    },
-    /**
-     * 注册所有自定义节点
-     */
-    registerNodes() {
-      //注册原子节点
-      register({
-        shape: 'model-node',
-        width: 180,
-        height: 48,
-        // component: {
-        //   render: h => h(ModelNode, {
-        //     on: {
-        //       // 监听 ModelNode组件触发的事件，获取传递出来的数据
-        //       myEvent: (data) => {
-        //         this.handleMyEvent(data)
-        //       }
-        //     }
-        //   })
-        // }
-        component: ModelNode,
-        ports: {
-          groups: PORTS_GROUPS
-        }
-      })
-
-      //注册开始节点
-      register({
-        shape: 'begin-node',
-        width: 180,
-        height: 48,
-        component: BeginNode,
-        ports: {
-          groups: PORTS_GROUPS
-        }
-      })
-
-      //注册菱形节点
-      register({
-        shape: 'rhombus-node',
-        width: 160,
-        height: 90,
-        component: RhombusNode,
-        ports: {
-          groups: PORTS_GROUPS
-        }
-      })
-    },
-    /**
-     * 初始化画布
-     */
-    initGraph() {
-      this.initHighlighter()
-
-      const graph = new Graph({
-        container: this.$refs.container,
-        autoResize: true,
-        scaling: { min: 0.1, max: 16 },
-        background: {
-          ...BACKGROUND_CONFIG,
-          ...this.background
-        },
-        panning: true,
-        mousewheel: true,
-        grid: this.grid || GRID_CONFIG,
-        highlighting: {
-          // 连接桩可以被连接时在连接桩外围围渲染一个包围框
-          magnetAvailable: {
-            name: 'availableHighlight'
-          },
-          // 连接桩吸附连线时在连接桩外围围渲染一个包围框
-          magnetAdsorbed: {
-            name: 'adsorbedHighlight',
-            args: {
-              attrs: {
-                strokeWidth: 1,
-                stroke: 'blue'
-              }
-            }
-          }
-        },
-        connecting: {
-          highlight: true,
-          createEdge() {
-            return this.createEdge({
-              attrs: {
-                line: {
-                  stroke: DEFAULT_COLOR.gray,
-                  strokeWidth: 2
-                }
-              }
-            })
-          },
-          router: 'er',
-          connector: 'rounded',
-          allowBlank: false,
-          allowMulti: false,
-          allowLoop: false,
-          allowNode: false,
-          allowEdge: false,
-          validateConnection: ({
-            sourceCell,
-            targetCell,
-            targetPort
-          }) => {
-            /**
-             * 元素左、上的连接桩为输入点
-             * 元素右、下的连接桩为输出点
-             */
-            /**
-             * 结束节点不能为输出port 
-             */
-            const targetPortGroup = targetCell.ports.items.find(p => p.id === targetPort)?.group
-            if (targetPortGroup === 'right' || targetPortGroup === 'bottom') {
-              return false
-            }
-            /**
-             * 开始节点为开始
-             */
-            if (sourceCell.shape === 'begin-node') {
-              return true
-            }
-
-            /**
-             * 结束节点为开始
-             */
-            if (targetCell.shape === 'begin-node') {
-              return false
-            }
-
-            if (this.linksLimit) {
-              const sourceGroupId = sourceCell.data.groupId
-              const targetGroupId = targetCell.data.groupId
-              return this.links.some(
-                link => {
-                  return link.source === sourceGroupId && link.target === targetGroupId
-                }
-              )
-            }
-            return true
-          }
-        }
-      })
-      this.graph = graph
-
-      //启用对齐线
-      graph.use(
-        new Snapline({
-          enabled: true
-        })
-      )
-
-      //启用框选功能
-      graph.use(
-        new Selection({
-          enabled: true,
-          multiple: true,
-          rubberband: true,
-          movable: true,
-          showNodeSelectionBox: true,
-          modifiers: ['alt']
-        })
-      )
-
-      //启用DND
-      const dnd = new Dnd({
-        target: graph,
-        // 这样放置到画布上的节点 ID 和 dnd start 传入的 node ID 一致
-        getDragNode: (node) => node.clone({ keepId: true }),
-        getDropNode: (node) => node.clone({ keepId: true })
-      })
-      this.dnd = dnd
-
-      graph.addNode({
-        shape: 'begin-node',
-        x: 40,
-        y: this.graphSize.height / 2,
-        width: 140,
-        height: 80,
-        data: {
-          label: '开始',
-          type: 'begin-node'
-        },
-        ports: {
-          items: [
-            {
-              id: 'port_1',
-              group: 'right'
-            }
-          ]
-        }
-      })
-
-      /**
-       * 监听边的连接建立时
-       */
-      graph.on('edge:connected', ({ edge }) => {
-        // 线被连上时设置线和两边链接桩为校验未通过的颜色
-        this.setEdgeAndPortColor(edge, DEFAULT_COLOR.red)
-      })
-
-      /**
-       * 监听连线点击
-       * 返回线段的输入和输出节点
-       */
-      graph.on('edge:click', (data) => {
-        const { edge } = data
-        const sourceNode = data.edge.getSourceNode()
-        const targetNode = data.edge.getTargetNode()
-        this.$emit('link-click', { edge, sourceNode, targetNode })
-      })
-
-      /**
-       * 监听点击节点
-       * 返回数据为被点击节点的所有输入节点list以及输出节点list
-       */
-      graph.on('node:click', ({ node }) => {
-        const clickNodeId = node.id
-        const edges = graph.getEdges()
-        const inputNodes = []
-        const outputNodes = []
-        /**
-         * 通过所有边的遍历
-         * 得到与点击节点所有有连接关系的节点
-         * 将节点分为输入和输出两组返回
-         */
-        edges.forEach(
-          edge => {
-            const sourceNode = edge.getSourceNode()
-            const targetNode = edge.getTargetNode()
-            sourceNode.id === clickNodeId && outputNodes.push(targetNode)
-            targetNode.id === clickNodeId && inputNodes.push(sourceNode)
-          }
-        )
-        this.$emit('node-click', { node, inputNodes, outputNodes })
-      })
-    },
-
-    /**
-     * 初始化高亮器
-     */
-    initHighlighter() {
-      const availableHighlight = {
-        highlight(cellView, magnet) {
-          magnet.parentElement.classList.add('port-magnet-available-highlight')
-        },
-
-        unhighlight(cellView, magnet) {
-          magnet.parentElement.classList.remove('port-magnet-available-highlight')
-        }
-      }
-
-      const adsorbedHighlight = {
-        highlight(cellView, magnet, options) {
-          magnet.parentElement.classList.add('port-magnet-adsorbed-highlight')
-        },
-
-        unhighlight(cellView, magnet) {
-          magnet.parentElement.classList.remove('port-magnet-adsorbed-highlight')
-        }
-      }
-      Graph.registerHighlighter('availableHighlight', availableHighlight, true)
-      Graph.registerHighlighter('adsorbedHighlight', adsorbedHighlight, true)
-    },
-
     /**
     * @param { Object } edge object 边
     * @param { String } color string 颜色
@@ -404,11 +137,18 @@ export default {
     },
 
     /**
+     * Methods
      * 以下开始为组件暴露至外部调用方法
      * 以下开始为组件暴露至外部调用方法
      * 以下开始为组件暴露至外部调用方法
      */
 
+    /**
+     * 清空画布
+     */
+    clear() {
+      this.graph.clearCells()
+    },
     /**
      * 获取画布json
      */
@@ -468,6 +208,100 @@ export default {
           break
       }
       this.setEdgeAndPortColor(edge, color)
+    },
+    /**
+     * @param {Object} cells:
+     * {
+     *   nodes: node[],
+     *   edges: edge[]
+     * }
+     * node: {
+     *   id: '',
+     *   label: '',
+     *   type: 'begin|model|rhombus'
+     * }
+     * edge: {
+     *   source: 'sourceId',
+     *   target: 'targetId',
+     *   sourcePosition: '', 边的起始点位于元素的位置 通常为 'left' | 'top'
+     *   targetPosition: ''  边的目标点位于元素的位置 通常为 'right' | 'bottom'
+     * }
+     * @param {Object} options:
+     * {
+     *   rankdir: 'TB', 布局的方向。T：top（上）；B：bottom（下）；L：left（左）；R：right（右）'TB' | 'BT' | 'LR' | 'RL'
+     *   nodesep: 50, 节点间距（px）
+     *   ranksep: 50 层间距（px）
+     * }
+     * @description 根据传入的nodes、edges生成元素，并自动排列
+     */
+    layout(cells, options = {}) {
+      const { nodes = [], edges = [] } = cells
+      const { rankdir = 'LR', nodesep = 50, ranksep = 50 } = options
+
+      nodes.forEach(
+        node => {
+          // !createNode 来源于 mixins/createNode.js
+          const nodeEle = this.createNode(
+            this.graph,
+            {
+              type: node.type,
+              data: node
+            }
+          )
+          node.id = nodeEle.id
+          this.graph.addNode(nodeEle)
+        }
+      )
+
+      const graphNodes = this.graph.getNodes()
+
+      edges.forEach(
+        edge => {
+          const sourceNode = graphNodes.find(n => n.data.id === edge.source)
+          const targetNode = graphNodes.find(n => n.data.id === edge.target)
+          const { sourcePosition = 'left' } = edge
+          const { targetPosition = 'right' } = edge
+          const edgeEle = this.graph.createEdge({
+            source: { cell: sourceNode.id, port: sourceNode.ports.items.find(p => p.group === targetPosition).id },
+            target: { cell: targetNode.id, port: targetNode.ports.items.find(p => p.group === sourcePosition).id }
+          })
+          this.setEdgeAndPortColor(edgeEle, DEFAULT_COLOR.red)
+          this.graph.addEdge(edgeEle)
+        }
+      )
+      // const nodes = this.graph.getNodes()
+      const graphEdges = this.graph.getEdges()
+      const data = {
+        nodes: graphNodes.map(node => {
+          return {
+            id: node.id,
+            x: 0,
+            y: 0
+          }
+        }),
+        edges: graphEdges.map(edge => {
+          return {
+            source: edge.source.cell,
+            target: edge.target.cell
+          }
+        })
+      }
+      const layout = new DagreLayout({
+        rankdir, // 可选，默认为图的中心
+        // align: 'DR', // 可选
+        nodesep, // 可选
+        ranksep, // 可选
+        controlPoints: true // 可选
+      })
+      layout.layout(data)
+      layout.nodes.forEach(
+        layoutNode => {
+          const { id, x, y } = layoutNode
+          const node = graphNodes.find(n => n.id === id)
+          node.position(x, y)
+        }
+      )
+      console.log(this.graph.getEdges())
     }
   }
 }

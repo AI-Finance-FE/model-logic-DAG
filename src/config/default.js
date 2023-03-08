@@ -5,6 +5,9 @@ export const DEFAULT_COLOR = {
   gray: '#A9AEB8'
 }
 
+/**
+ * 网格设置
+ */
 export const GRID_CONFIG = {
   visible: true,
   type: 'doubleMesh',
@@ -21,19 +24,17 @@ export const GRID_CONFIG = {
   ]
 }
 
+/**
+ * 背景色设置
+ */
 export const BACKGROUND_CONFIG = {
   color: '#EEF1F3'
 }
 
+/**
+ * 连接桩markup
+ */
 const portsMarkup = [
-  // {
-  //   tagName: 'circle',
-  //   selector: 'border'
-  // },
-  // {
-  //   tagName: 'circle',
-  //   selector: 'circle'
-  // }
   {
     tagName: 'g',
     selector: 'port',
@@ -52,6 +53,9 @@ const portsMarkup = [
   }
 ]
 
+/**
+ * 连接桩样式
+ */
 const portsAttrs = {
   outside: {
     magnet: true,
@@ -65,22 +69,11 @@ const portsAttrs = {
     fill: '#E3E6EC',
     r: 3
   }
-  // circle: {
-  //   magnet: true,
-  //   fill: '#E3E6EC',
-  //   stroke: '#ffffff',
-  //   r: 3,
-  //   strokeWidth: 10
-  // },
-  // border: {
-  //   magnet: true,
-  //   fill: '#E3E6EC',
-  //   r: 8,
-  //   stroke: '#E3E6EC',
-  //   strokeWidth: 1
-  // }
 }
 
+/**
+ * 连接桩group
+ */
 export const PORTS_GROUPS = {
   left: {
     position: 'left',
@@ -102,4 +95,11 @@ export const PORTS_GROUPS = {
     markup: portsMarkup,
     attrs: portsAttrs
   }
+}
+
+export default {
+  DEFAULT_COLOR,
+  GRID_CONFIG,
+  BACKGROUND_CONFIG,
+  PORTS_GROUPS
 }

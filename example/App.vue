@@ -30,13 +30,16 @@ export default {
           items: [
             {
               label: '人头检测',
-              id: 1
+              id: 1,
+              type: 'model'
             },
             {
-              label: '现金检测'
+              label: '现金检测',
+              type: 'model'
             },
             {
-              label: '火焰检测'
+              label: '火焰检测',
+              type: 'model'
             }
           ]
         },
@@ -45,7 +48,8 @@ export default {
           id: '2',
           items: [
             {
-              label: '逻辑判断'
+              label: '逻辑判断',
+              type: 'rhombus'
             }
           ]
         }
@@ -64,7 +68,52 @@ export default {
   },
   methods: {
     handleExport() {
-      console.log(this.$refs.modelDAG.getData())
+      const cellsData = {
+        nodes: [
+          // push
+          // {
+          //   id: 'begin-node',
+          //   label: '开始',
+          //   type: 'begin'
+          // },
+          {
+            id: '原子能力1',
+            label: '原子能力1',
+            type: 'model'
+          },
+          {
+            id: '原子能力2',
+            label: '原子能力2',
+            type: 'model'
+          },
+          {
+            id: '逻辑组件1',
+            label: '逻辑组件',
+            type: 'rhombus',
+          }
+        ],
+        edges: [
+          {
+            source: 'begin-node',
+            target: '原子能力1'
+          },
+          {
+            source: 'begin-node',
+            target: '原子能力2'
+          },
+          {
+            source: '原子能力1',
+            target: '逻辑组件1'
+          },
+          {
+            source: '原子能力2',
+            target: '逻辑组件1'
+          }
+        ]
+      }
+      // this.$refs.modelDAG.fromGraphJSON(data)
+      this.$refs.modelDAG.layout(cellsData)
+      // console.log(this.$refs.modelDAG.toGraphJSON())
     },
     handleNodeClick({ node }) {
       console.log(node)

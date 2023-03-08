@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-03 17:18:46
+ * @Last Modified time: 2023-03-08 10:31:33
  * @Description: 工具栏
  */
 <template>
@@ -46,8 +46,11 @@
 </template>
 <script>
 import * as X6 from '@antv/x6'
+// mixins
+import createNode from '@/mixins/createNode'
 export default {
   name: 'Stencil',
+  mixins: [createNode],
   props: {
     graph: {
       type: X6.Graph,
@@ -88,45 +91,14 @@ export default {
         ...stencil,
         groupId: stencilGroup.id
       }
-      const node = stencil.label === '逻辑判断' ? this.graph.createNode({
-        shape: 'rhombus-node',
-        width: 160,
-        height: 90,
-        data,
-        ports: {
-          items: [
-            {
-              id: 'port_1',
-              group: 'left'
-            },
-            {
-              id: 'port_2',
-              group: 'right'
-            },
-            {
-              id: 'port_3',
-              group: 'bottom'
-            }
-          ]
+      const { type = 'model' } = stencil
+      const node = this.createNode(
+        this.graph,
+        {
+          type,
+          data: data
         }
-      }) : this.graph.createNode({
-        shape: 'model-node',
-        width: 140,
-        height: 80,
-        data,
-        ports: {
-          items: [
-            {
-              id: 'port_1',
-              group: 'right'
-            },
-            {
-              id: 'port_2',
-              group: 'left'
-            }
-          ]
-        }
-      })
+      )
       this.dnd.start(node, e)
     },
     toggleExpand(stencilGroup) {
