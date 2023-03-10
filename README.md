@@ -147,7 +147,7 @@ export default {
       source: 'begin-node',
       target: '原子能力1',
       sourcePosition: 'right',
-      sourcePosition: 'left'
+      targetPosition: 'left'
     },
     {
       source: 'begin-node',
