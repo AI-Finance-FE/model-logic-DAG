@@ -117,14 +117,14 @@ export default {
         }
       })
       this.graph = graph
-      //启用对齐线
+      // 启用对齐线
       graph.use(
         new Snapline({
           enabled: true
         })
       )
 
-      //启用框选功能
+      // 启用框选功能
       graph.use(
         new Selection({
           enabled: true,
