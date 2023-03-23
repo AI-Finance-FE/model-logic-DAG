@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-08 10:31:33
+ * @Last Modified time: 2023-03-23 10:08:28
  * @Description: 工具栏
  */
 <template>
@@ -82,8 +82,16 @@ export default {
       stencilsData: []
     }
   },
+  watch: {
+    stencils: {
+      handler: function (oldVal, newVal) {
+        this.stencilsData = JSON.parse(JSON.stringify(this.stencils))
+      },
+      deep: true
+    }
+  },
   mounted() {
-    this.stencilsData = JSON.parse(JSON.stringify(this.stencils))
+    // this.stencilsData = JSON.parse(JSON.stringify(this.stencils))
   },
   methods: {
     startDrag(e, stencilGroup, stencil) {
