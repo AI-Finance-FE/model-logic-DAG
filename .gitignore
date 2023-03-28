@@ -29,4 +29,5 @@ dist-ssr
 dist.zip
 dist*.zip
 node_modules.zip
-docs-cn/docs
+docs-cn/doc
+lib.zips
