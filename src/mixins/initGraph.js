@@ -116,7 +116,6 @@ export default {
             if (this.linksLimit) {
               const sourceGroupId = sourceCell.data.groupId
               const targetGroupId = targetCell.data.groupId
-              console.log(sourceGroupId, targetGroupId)
               return this.links.some(
                 link => {
                   return link.source === sourceGroupId && link.target === targetGroupId
