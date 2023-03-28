@@ -91,7 +91,7 @@ export default {
             if (targetPortGroup === 'right' || targetPortGroup === 'bottom') {
               return false
             }
-            
+
             /**
              * 开始节点不能为输入port
              */
@@ -114,8 +114,10 @@ export default {
             }
 
             if (this.linksLimit) {
+              console.log(sourceCell, targetCell)
               const sourceGroupId = sourceCell.data.groupId
               const targetGroupId = targetCell.data.groupId
+              console.log(sourceGroupId, targetGroupId)
               return this.links.some(
                 link => {
                   return link.source === sourceGroupId && link.target === targetGroupId

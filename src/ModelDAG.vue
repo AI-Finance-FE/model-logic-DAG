@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-23 10:08:19
+ * @Last Modified time: 2023-03-28 12:57:29
  */
 <template>
   <div
@@ -240,12 +240,13 @@ export default {
 
       nodes.forEach(
         node => {
+          const groupId = this.stencils?.find(i => i?.items?.find(r => r.id === node.id))?.id || ''
           // !createNode 来源于 mixins/createNode.js
           const nodeEle = this.createNode(
             this.graph,
             {
               type: node.type,
-              data: node
+              data: { ...node, groupId }
             }
           )
           node.id = nodeEle.id
