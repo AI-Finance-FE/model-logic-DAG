@@ -76,7 +76,8 @@ export default {
           validateConnection: ({
             sourceCell,
             targetCell,
-            targetPort
+            targetPort,
+            sourcePort
           }) => {
             /**
              * 元素左、上的连接桩为输入点
@@ -86,9 +87,18 @@ export default {
              * 结束节点不能为输出port 
              */
             const targetPortGroup = targetCell.ports.items.find(p => p.id === targetPort)?.group
+            const sourcePortGroup = sourceCell.ports.items.find(p => p.id === sourcePort)?.group
             if (targetPortGroup === 'right' || targetPortGroup === 'bottom') {
               return false
             }
+            
+            /**
+             * 开始节点不能为输入port
+             */
+            if (sourcePortGroup === 'left' || targetPortGroup === 'top') {
+              return false
+            }
+
             /**
              * 开始节点为开始
              */
@@ -106,6 +116,7 @@ export default {
             if (this.linksLimit) {
               const sourceGroupId = sourceCell.data.groupId
               const targetGroupId = targetCell.data.groupId
+              console.log(sourceGroupId, targetGroupId)
               return this.links.some(
                 link => {
                   return link.source === sourceGroupId && link.target === targetGroupId

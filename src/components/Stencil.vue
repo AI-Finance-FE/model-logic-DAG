@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-23 10:08:28
+ * @Last Modified time: 2023-03-28 10:02:08
  * @Description: 工具栏
  */
 <template>
@@ -87,7 +87,8 @@ export default {
       handler: function (oldVal, newVal) {
         this.stencilsData = JSON.parse(JSON.stringify(this.stencils))
       },
-      deep: true
+      deep: true,
+      immediate: true
     }
   },
   mounted() {
