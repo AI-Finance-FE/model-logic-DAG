@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-28 09:46:56 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-03 17:02:10
+ * @Last Modified time: 2023-05-25 13:00:29
  * @Description: 菱形节点
  */
 <template>
@@ -72,8 +72,18 @@
           </g>
         </g>
       </g>
+      <text
+        x="50%"
+        y="50%"
+        text-anchor="middle"
+        fill="#000000"
+        font-size="16"
+        style="transform: translateY(5px);"
+      >
+        {{ label }}
+      </text>
     </svg>
-    <p class="label">{{ label }}</p>
+    <!-- <p class="label">{{ label }}</p> -->
   </div>
 </template>
 <script>
@@ -96,8 +106,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '@/styles/var.scss';
+
 .rhombus-node-warp {
-  position: relative;
+  /* position: relative; */
 
   .label {
     font-size: 16px;
