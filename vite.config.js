@@ -2,6 +2,7 @@ import { createVuePlugin } from 'vite-plugin-vue2'
 import eslintPlugin from 'vite-plugin-eslint'
 import { defineConfig } from 'vite'
 import libCss from './build/vite-plugin-libcss.js'
+import esbuild from 'rollup-plugin-esbuild'
 
 import { resolve } from 'path'
 
@@ -9,16 +10,26 @@ export default defineConfig({
   root: './example',
   plugins: [
     libCss(),
-    createVuePlugin(),
+    createVuePlugin({
+      target: 'chrome58'
+    }),
     eslintPlugin({
       include: ['src/**/*.vue', 'src/**/*.js'],
       cache: false
-    })
+    }),
+    {
+      ...esbuild({
+        target: 'chrome64',
+        loaders: {
+          '.vue': 'js'
+        }
+      })
+    }
   ],
   resolve: {
     alias: {
       '~': resolve(__dirname),
-      '@': resolve(__dirname, 'src'),
+      '@': resolve(__dirname, 'src')
     },
     dedupe: [],
     conditions: [],
@@ -29,6 +40,7 @@ export default defineConfig({
     port: 1735
   },
   build: {
+    target: 'es2015',
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/index.js'),
