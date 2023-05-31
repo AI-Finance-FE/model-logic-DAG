@@ -40,7 +40,7 @@ export default defineConfig({
     port: 1735
   },
   build: {
-    target: 'es2015',
+    target: 'chrome57',
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/index.js'),
