@@ -10,6 +10,7 @@ import { Selection } from '@antv/x6-plugin-selection'
 // node
 import ModelNode from '@/components/nodes/Model'
 import BeginNode from '~/src/components/nodes/Begin'
+import EndNode from '~/src/components/nodes/End'
 import RhombusNode from '~/src/components/nodes/Rhombus'
 // config
 import { GRID_CONFIG, BACKGROUND_CONFIG, PORTS_GROUPS, DEFAULT_COLOR } from '@/config/default'
@@ -21,8 +22,8 @@ export default {
       this.initHighlighter()
     },
     /**
-   * 初始化画布
-   */
+     * 初始化画布
+     */
     newGraph() {
       const graph = new Graph({
         container: this.$refs.container,
@@ -73,18 +74,13 @@ export default {
           allowLoop: false,
           allowNode: false,
           allowEdge: false,
-          validateConnection: ({
-            sourceCell,
-            targetCell,
-            targetPort,
-            sourcePort
-          }) => {
+          validateConnection: ({ sourceCell, targetCell, targetPort, sourcePort }) => {
             /**
              * 元素左、上的连接桩为输入点
              * 元素右、下的连接桩为输出点
              */
             /**
-             * 结束节点不能为输出port 
+             * 结束节点不能为输出port
              */
             const targetPortGroup = targetCell.ports.items.find(p => p.id === targetPort)?.group
             const sourcePortGroup = sourceCell.ports.items.find(p => p.id === sourcePort)?.group
@@ -118,11 +114,9 @@ export default {
               const sourceGroupId = sourceCell.data.groupId
               const targetGroupId = targetCell.data.groupId
               console.log(sourceGroupId, targetGroupId)
-              return this.links.some(
-                link => {
-                  return link.source === sourceGroupId && link.target === targetGroupId
-                }
-              )
+              return this.links.some(link => {
+                return link.source === sourceGroupId && link.target === targetGroupId
+              })
             }
             return true
           }
@@ -152,8 +146,8 @@ export default {
       const dnd = new Dnd({
         target: graph,
         // 这样放置到画布上的节点 ID 和 dnd start 传入的 node ID 一致
-        getDragNode: (node) => node.clone({ keepId: true }),
-        getDropNode: (node) => node.clone({ keepId: true })
+        getDragNode: node => node.clone({ keepId: true }),
+        getDropNode: node => node.clone({ keepId: true })
       })
       this.dnd = dnd
 
@@ -180,7 +174,7 @@ export default {
        * 监听连线点击
        * 返回线段的输入和输出节点
        */
-      graph.on('edge:click', (data) => {
+      graph.on('edge:click', data => {
         const { edge } = data
         const sourceNode = data.edge.getSourceNode()
         const targetNode = data.edge.getTargetNode()
@@ -201,21 +195,52 @@ export default {
          * 得到与点击节点所有有连接关系的节点
          * 将节点分为输入和输出两组返回
          */
-        edges.forEach(
-          edge => {
-            const sourceNode = edge.getSourceNode()
-            const targetNode = edge.getTargetNode()
-            sourceNode.id === clickNodeId && outputNodes.push(targetNode)
-            targetNode.id === clickNodeId && inputNodes.push(sourceNode)
-          }
-        )
+        edges.forEach(edge => {
+          const sourceNode = edge.getSourceNode()
+          const targetNode = edge.getTargetNode()
+          sourceNode.id === clickNodeId && outputNodes.push(targetNode)
+          targetNode.id === clickNodeId && inputNodes.push(sourceNode)
+        })
         this.$emit('node-click', { node, inputNodes, outputNodes })
+      })
+
+      // 添加边工具
+      graph.on('edge:mouseenter', ({ cell }) => {
+        cell.addTools([
+          {
+            name: 'button-remove',
+            args: { distance: '50%' }
+          }
+        ])
+      })
+
+      // 删除边工具
+      graph.on('edge:mouseleave', ({ cell }) => {
+        if (cell.hasTool('button-remove')) {
+          cell.removeTool('button-remove')
+        }
+      })
+
+      // 添加节点工具
+      graph.on('node:mouseenter', ({ node }) => {
+        node.addTools([
+          {
+            name: 'button-remove',
+            args: { x: 10, y: 10 }
+          }
+        ])
+      })
+      // 删除节点工具
+      graph.on('node:mouseleave', ({ node }) => {
+        if (node.hasTool('button-remove')) {
+          node.removeTool('button-remove')
+        }
       })
     },
     /**
-       * 初始化高亮器
-       * 用于连接桩高亮
-       */
+     * 初始化高亮器
+     * 用于连接桩高亮
+     */
     initHighlighter() {
       const availableHighlight = {
         highlight(cellView, magnet) {
@@ -256,6 +281,15 @@ export default {
       register({
         shape: 'begin-node',
         component: BeginNode,
+        ports: {
+          groups: PORTS_GROUPS
+        }
+      })
+
+      //注册结束节点
+      register({
+        shape: 'end-node',
+        component: EndNode,
         ports: {
           groups: PORTS_GROUPS
         }

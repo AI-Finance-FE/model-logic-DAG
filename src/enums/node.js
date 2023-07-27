@@ -3,7 +3,9 @@
  */
 export const ENodeTypes = {
   model: 'model-node',
+  logic: 'logic-node',
   begin: 'begin-node',
+  end: 'end-node',
   rhombus: 'rhombus-node'
 }
 
@@ -15,7 +17,15 @@ export const ENodeDefaultSize = {
     width: 140,
     height: 80
   },
+  logic: {
+    width: 100,
+    height: 60
+  },
   begin: {
+    width: 140,
+    height: 80
+  },
+  end: {
     width: 140,
     height: 80
   },
@@ -30,7 +40,9 @@ export const ENodeDefaultSize = {
  */
 export const ENodePorts = {
   model: ['left', 'right'],
+  logic: ['left', 'right'],
   begin: ['right'],
+  end: ['left'],
   rhombus: ['left', 'right', 'bottom']
 }
 

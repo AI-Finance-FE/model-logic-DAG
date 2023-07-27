@@ -33,6 +33,7 @@ export default {
 
 |  参数   |  说明  |  类型  |  可选值  |  默认值  |  
 |  ----  | ----  | ----  | ----  | ----  |
+| preview  | 预览模式  |  Boolean | true \| false | false |
 | stencils  | 工具栏元素数据  |  Array[stencil] | - | [] |
 | links  | 元素连接线限制关系 | Array[link] | - | [] |
 | linksLimit  | 是否开启元素连线关系限制，默认开启，需要传入```links```，存在links中的关系才允许被连线，为```false```时```links```参数无效 | Boolean | - | true |
@@ -42,6 +43,9 @@ export default {
 #### stencils示例
 
 ```
+// item[].type 有以下类型
+//   start |   end   |   model  |   rhombus  | logic
+// 开始节点 ｜ 结束节点 ｜ 原子能力 ｜ 菱形逻辑节点 ｜ 逻辑节点
 [
   {
     groupName: '原子能力',

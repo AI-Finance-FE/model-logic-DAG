@@ -1,6 +1,6 @@
 {
   "name": "model-logic-dag",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "可用于模型、服务链式调用配置的DAG工具",
   "keywords": [
     "DAG"
