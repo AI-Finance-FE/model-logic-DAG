@@ -2,14 +2,16 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-28 12:57:29
+ * @Last Modified time: 2023-07-27 10:50:20
  */
 <template>
   <div
     class="DAG-warp"
     ref="dagWrap"
+    :class="preview ? 'events-none' : ''"
   >
     <Stencil
+      v-if="!preview"
       :graph="graph"
       :dnd="dnd"
       :stencils="stencils"
@@ -38,6 +40,10 @@ export default {
   components: { Stencil },
   mixins: [createNode, initGraph],
   props: {
+    preview: {
+      type: Boolean,
+      default: false
+    },
     /**
      * 画布背景色
      */
@@ -341,5 +347,9 @@ export default {
   .inside {
     fill: $--default-color !important;
   }
+}
+
+.events-none {
+  pointer-events: none;
 }
 </style>
