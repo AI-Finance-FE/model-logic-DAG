@@ -68,14 +68,15 @@ export default {
   },
   methods: {
     handleExport() {
+      this.$refs.modelDAG.clear()
       const cellsData = {
         nodes: [
           // push
-          // {
-          //   id: 'begin-node',
-          //   label: '开始',
-          //   type: 'begin'
-          // },
+          {
+            id: 'begin-node',
+            label: '开始',
+            type: 'begin'
+          },
           {
             id: '原子能力1',
             label: '原子能力1',
@@ -91,6 +92,21 @@ export default {
             label: '逻辑组件',
             type: 'rhombus',
           }
+          // {
+          //   id: '逻辑组件1',
+          //   label: '逻辑组件',
+          //   type: 'rhombus',
+          // },
+          // {
+          //   id: '逻辑组件1',
+          //   label: '逻辑组件',
+          //   type: 'rhombus',
+          // },
+          // {
+          //   id: '逻辑组件1',
+          //   label: '逻辑组件',
+          //   type: 'rhombus',
+          // }
         ],
         edges: [
           {
@@ -127,7 +143,9 @@ body {
 }
 
 #App {
-  width: 100%;
-  height: 100vh;
+  width: 500px;
+  height: 500px;
+  /* width: 100%; */
+  /* height: 100vh; */
 }
 </style>

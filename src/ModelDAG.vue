@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-27 10:50:20
+ * @Last Modified time: 2023-07-27 15:00:44
  */
 <template>
   <div
@@ -17,10 +17,12 @@
       :stencils="stencils"
       :title="title"
     ></Stencil>
-    <div
-      id="container"
-      ref="container"
-    >
+    <div class="graph-wrap">
+      <div
+        id="container"
+        ref="container"
+      >
+      </div>
     </div>
   </div>
 </template>
@@ -308,6 +310,9 @@ export default {
           node.position(x, y)
         }
       )
+      this.graph.zoomToFit({
+        padding: 20
+      })
     }
   }
 }
@@ -317,6 +322,16 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
+
+  .graph-wrap {
+    width: 100%;
+    height: 100%;
+
+    #container {
+      width: 100%;
+      height: 100%
+    }
+  }
 }
 </style>
 
