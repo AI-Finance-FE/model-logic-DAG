@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-28 10:28:48
+ * @Last Modified time: 2023-07-28 16:23:22
  */
 <template>
   <div
@@ -257,7 +257,8 @@ export default {
               data: { ...node, groupId }
             }
           )
-          node.id = nodeEle.id
+
+          // node.id = nodeEle.id
           this.graph.addNode(nodeEle)
         }
       )
@@ -272,7 +273,8 @@ export default {
           const { targetPosition = 'right' } = edge
           const edgeEle = this.graph.createEdge({
             source: { cell: sourceNode.id, port: sourceNode.ports.items.find(p => p.group === targetPosition).id },
-            target: { cell: targetNode.id, port: targetNode.ports.items.find(p => p.group === sourcePosition).id }
+            target: { cell: targetNode.id, port: targetNode.ports.items.find(p => p.group === sourcePosition).id },
+            data: edge?.data || {}
           })
           this.setEdgeAndPortColor(edgeEle, DEFAULT_COLOR.red)
           this.graph.addEdge(edgeEle)
