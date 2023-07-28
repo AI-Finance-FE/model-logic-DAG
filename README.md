@@ -169,6 +169,7 @@ export default {
   ]
 }
 ```
+
 #### setEdgeStatus()
 
 <div style="padding:18px 14px;color:#5c6b77;background:rgba(0,0,0,.02);border:1px solid #f0f0f0;margin-bottom: 14px;">setEdgeStatus(edge: Edge.Metadata, status: 'success' | 'fail')</div>
@@ -179,7 +180,6 @@ export default {
 |  ----  | ----  | ----  | ----  | ----  |  ----  |
 | edge  |  Object  |  是  |   -  |  -       |  需要被修改的边  |
 | status  |  String  |  是  |   success \| fail  |   -   |  状态，也可以直接传入颜色来设置  |
-
 
 #### toGraphJSON()
 
@@ -204,3 +204,9 @@ export default {
 <div style="padding:18px 14px;color:#5c6b77;background:rgba(0,0,0,.02);border:1px solid #f0f0f0;margin-bottom: 14px;">getData()</div>
 
 获取业务数据
+
+#### getCellById()
+
+<div style="padding:18px 14px;color:#5c6b77;background:rgba(0,0,0,.02);border:1px solid #f0f0f0;margin-bottom: 14px;">getCellById()</div>
+
+根据cell.id获取cell数据

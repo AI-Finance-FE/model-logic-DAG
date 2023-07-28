@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-27 15:00:44
+ * @Last Modified time: 2023-07-28 10:28:48
  */
 <template>
   <div
@@ -313,6 +313,9 @@ export default {
       this.graph.zoomToFit({
         padding: 20
       })
+    },
+    getCellById(id) {
+      return this.graph.getCellById(id)
     }
   }
 }
