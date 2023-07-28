@@ -165,9 +165,14 @@ export default {
       /**
        * 监听边的连接建立时
        */
-      graph.on('edge:connected', ({ edge }) => {
-        // 线被连上时设置线和两边链接桩为校验未通过的颜色
-        this.setEdgeAndPortColor(edge, DEFAULT_COLOR.red)
+      graph.on('edge:connected', ({ isNew, edge }) => {
+        if (isNew) {
+          const source = edge.getSourceCell()
+          const target = edge.getTargetCell()
+          this.$emit('linked', { edge, sourceNode: source, targetNode: target })
+          // 线被连上时设置线和两边链接桩为校验未通过的颜色
+          this.setEdgeAndPortColor(edge, DEFAULT_COLOR.red)
+        }
       })
 
       /**
@@ -202,14 +207,6 @@ export default {
           targetNode.id === clickNodeId && inputNodes.push(sourceNode)
         })
         this.$emit('node-click', { node, inputNodes, outputNodes })
-      })
-
-      graph.on('edge:connected', ({ isNew, edge }) => {
-        if (isNew) {
-          const source = edge.getSourceCell()
-          const target = edge.getTargetCell()
-          this.$emit('linked', { edge, sourceNode: source, targetNode: target })
-        }
       })
 
       // 添加边工具
