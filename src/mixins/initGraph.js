@@ -152,15 +152,15 @@ export default {
       this.dnd = dnd
 
       // !createNode 来源于 mixins/createNode.js
-      const beginNode = this.createNode(graph, {
-        type: 'begin',
-        data: {
-          id: 'begin-node'
-        },
-        x: 40,
-        y: this.graphSize.height / 2 - 40
-      })
-      graph.addNode(beginNode)
+      // const beginNode = this.createNode(graph, {
+      //   type: 'begin',
+      //   data: {
+      //     id: 'begin-node'
+      //   },
+      //   x: 40,
+      //   y: this.graphSize.height / 2 - 40
+      // })
+      // graph.addNode(beginNode)
 
       /**
        * 监听边的连接建立时
