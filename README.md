@@ -97,6 +97,7 @@ export default {
 |  ----  | ----  | ----  |
 | link-click  | 点击关系线时触发  |  ({link, sourceNode, targetNode})  |
 | node-click  | 点击节点时触发 | ({node, inputNodes, outputNodes}) |
+| linked  | 边连接时出发 | ({edge, sourceNode, targetNode}) |
 
 ### Methods
 

@@ -204,6 +204,14 @@ export default {
         this.$emit('node-click', { node, inputNodes, outputNodes })
       })
 
+      graph.on('edge:connected', ({ isNew, edge }) => {
+        if (isNew) {
+          const source = edge.getSourceCell()
+          const target = edge.getTargetCell()
+          this.$emit('linked', { edge, sourceNode: source, targetNode: target })
+        }
+      })
+
       // 添加边工具
       graph.on('edge:mouseenter', ({ cell }) => {
         cell.addTools([
