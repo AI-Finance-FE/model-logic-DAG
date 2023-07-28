@@ -9,6 +9,7 @@ import { Dnd } from '@antv/x6-plugin-dnd'
 import { Selection } from '@antv/x6-plugin-selection'
 // node
 import ModelNode from '@/components/nodes/Model'
+import LogicNode from '@/components/nodes/Logic'
 import BeginNode from '~/src/components/nodes/Begin'
 import EndNode from '~/src/components/nodes/End'
 import RhombusNode from '~/src/components/nodes/Rhombus'
@@ -277,6 +278,15 @@ export default {
       register({
         shape: 'model-node',
         component: ModelNode,
+        ports: {
+          groups: PORTS_GROUPS
+        }
+      })
+      
+      //注册逻辑节点
+      register({
+        shape: 'logic-node',
+        component: LogicNode,
         ports: {
           groups: PORTS_GROUPS
         }
