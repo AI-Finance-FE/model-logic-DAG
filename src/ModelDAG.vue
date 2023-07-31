@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-31 09:36:32
+ * @Last Modified time: 2023-07-31 09:38:01
  */
 <template>
   <div
@@ -316,7 +316,8 @@ export default {
         }
       )
       this.graph.zoomToFit({
-        padding: 20
+        padding: 20,
+        maxScale: 1.5
       })
     },
     getCellById(id) {
