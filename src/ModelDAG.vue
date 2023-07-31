@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-31 09:38:01
+ * @Last Modified time: 2023-07-31 15:17:07
  */
 <template>
   <div
@@ -254,9 +254,8 @@ export default {
             this.graph,
             {
               type: node.type,
-              data: { ...node?.data, groupId, nodeId: node.id },
+              data: { ...node?.data, groupId, nodeId: node.id, label: node.label }
               // id: node.id,
-              label: node.label
               // data: { ...node, groupId }
             }
           )
