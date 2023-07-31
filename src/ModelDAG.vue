@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-28 16:23:22
+ * @Last Modified time: 2023-07-31 09:36:32
  */
 <template>
   <div
@@ -248,13 +248,16 @@ export default {
 
       nodes.forEach(
         node => {
-          const groupId = this.stencils?.find(i => i?.items?.find(r => r.id === node.id))?.id || ''
+          const groupId = this.stencils?.find(i => i?.items?.find(r => r.id === node.data.id))?.id || ''
           // !createNode 来源于 mixins/createNode.js
           const nodeEle = this.createNode(
             this.graph,
             {
               type: node.type,
-              data: { ...node, groupId }
+              data: { ...node?.data, groupId, nodeId: node.id },
+              // id: node.id,
+              label: node.label
+              // data: { ...node, groupId }
             }
           )
 
@@ -267,17 +270,17 @@ export default {
 
       edges.forEach(
         edge => {
-          const sourceNode = graphNodes.find(n => n.data.id === edge.source)
-          const targetNode = graphNodes.find(n => n.data.id === edge.target)
+          const sourceNode = graphNodes.find(n => n.data.nodeId === edge.source)
+          const targetNode = graphNodes.find(n => n.data.nodeId === edge.target)
           const { sourcePosition = 'left' } = edge
           const { targetPosition = 'right' } = edge
-          const edgeEle = this.graph.createEdge({
+          const edgeEle = sourceNode && targetNode && this.graph.createEdge({
             source: { cell: sourceNode.id, port: sourceNode.ports.items.find(p => p.group === targetPosition).id },
             target: { cell: targetNode.id, port: targetNode.ports.items.find(p => p.group === sourcePosition).id },
             data: edge?.data || {}
           })
-          this.setEdgeAndPortColor(edgeEle, DEFAULT_COLOR.red)
-          this.graph.addEdge(edgeEle)
+          edgeEle && this.setEdgeAndPortColor(edgeEle, DEFAULT_COLOR.red)
+          edgeEle && this.graph.addEdge(edgeEle)
         }
       )
       // const nodes = this.graph.getNodes()
