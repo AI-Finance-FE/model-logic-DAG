@@ -2,7 +2,7 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-20 14:06:32 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-03-28 12:42:17
+ * @Last Modified time: 2023-08-02 08:55:26
  * @Description: 工具栏
  */
 <template>
@@ -204,6 +204,7 @@ export default {
         height: 56px;
         // box-shadow: $--basic-boxShadow;
         border-radius: 8px;
+        font-size: 14px;
 
         &:nth-child(2n - 1) {
           margin-right: 7px;
