@@ -164,6 +164,10 @@ export default {
       // graph.addNode(beginNode)
 
       /**
+       * GRAPH EVENTS
+       */
+
+      /**
        * 监听边的连接建立时
        */
       graph.on('edge:connected', ({ isNew, edge }) => {
@@ -210,6 +214,13 @@ export default {
         this.$emit('node-click', { node, inputNodes, outputNodes })
       })
 
+      /**
+       * 监听节点添加
+       */
+      graph.on('node:added', ({ node }) => {
+        this.$emit('node-add', node)
+      })
+
       // 添加边工具
       graph.on('edge:mouseenter', ({ cell }) => {
         cell.addTools([
@@ -236,6 +247,7 @@ export default {
           }
         ])
       })
+
       // 删除节点工具
       graph.on('node:mouseleave', ({ node }) => {
         if (node.hasTool('button-remove')) {
@@ -282,7 +294,7 @@ export default {
           groups: PORTS_GROUPS
         }
       })
-      
+
       //注册逻辑节点
       register({
         shape: 'logic-node',
