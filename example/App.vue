@@ -143,9 +143,7 @@ body {
 }
 
 #App {
-  width: 500px;
-  height: 500px;
-  /* width: 100%; */
-  /* height: 100vh; */
+  width: 100%;
+  height: 100vh;
 }
 </style>

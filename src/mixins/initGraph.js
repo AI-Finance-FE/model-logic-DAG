@@ -111,10 +111,8 @@ export default {
             }
 
             if (this.linksLimit) {
-              console.log(sourceCell, targetCell)
               const sourceGroupId = sourceCell.data.groupId
               const targetGroupId = targetCell.data.groupId
-              console.log(sourceGroupId, targetGroupId)
               return this.links.some(link => {
                 return link.source === sourceGroupId && link.target === targetGroupId
               })
@@ -221,8 +219,11 @@ export default {
         this.$emit('node-add', node)
       })
 
-      // 添加边工具
-      graph.on('edge:mouseenter', ({ cell }) => {
+      /**
+       * 添加边工具 用于删除边
+       * 鼠标右键点击触发
+       */
+      graph.on('edge:contextmenu', ({ cell }) => {
         cell.addTools([
           {
             name: 'button-remove',
@@ -231,11 +232,17 @@ export default {
         ])
       })
 
-      // 删除边工具
-      graph.on('edge:mouseleave', ({ cell }) => {
-        if (cell.hasTool('button-remove')) {
-          cell.removeTool('button-remove')
-        }
+      /**
+       * 移除边的删除工具
+       * 监听画布空白处mouseup触发
+       */
+      graph.on('blank:mouseup', () => {
+        const edges = graph.getEdges()
+        edges.forEach(edge => {
+          if (edge.hasTool('button-remove')) {
+            edge.removeTool('button-remove')
+          }
+        })
       })
 
       // 添加节点工具
