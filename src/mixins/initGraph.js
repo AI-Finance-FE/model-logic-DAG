@@ -132,6 +132,7 @@ export default {
       // 启用框选功能
       graph.use(
         new Selection({
+          className: 'node-selected-wrap',
           enabled: true,
           multiple: true,
           rubberband: true,
@@ -243,23 +244,22 @@ export default {
             edge.removeTool('button-remove')
           }
         })
+        const nodes = graph.getNodes()
+        nodes.forEach(node => {
+          if (node.hasTool('button-remove')) {
+            node.removeTool('button-remove')
+          }
+        })
       })
 
       // 添加节点工具
-      graph.on('node:mouseenter', ({ node }) => {
+      graph.on('node:contextmenu', ({ node }) => {
         node.addTools([
           {
             name: 'button-remove',
             args: { x: 10, y: 10 }
           }
         ])
-      })
-
-      // 删除节点工具
-      graph.on('node:mouseleave', ({ node }) => {
-        if (node.hasTool('button-remove')) {
-          node.removeTool('button-remove')
-        }
       })
     },
     /**

@@ -2,9 +2,10 @@
  * @Author: Liangchenkang
  * @Date: 2023-02-07 14:24:42
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-05-31 09:37:29
+ * @Last Modified time: 2023-08-09 10:30:12
  */
 import ModelDAG from './ModelDAG.vue'
+import './styles/index.scss'
 
 function flat(depth = 1) {
   return depth > 0
