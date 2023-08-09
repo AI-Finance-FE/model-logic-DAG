@@ -2,13 +2,12 @@
  * @Author: Liangchenkang 
  * @Date: 2023-02-07 14:24:39 
  * @Last Modified by: Liangchenkang
- * @Last Modified time: 2023-07-31 15:17:07
+ * @Last Modified time: 2023-08-09 14:06:38
  */
 <template>
   <div
     class="DAG-warp"
     ref="dagWrap"
-    :class="preview ? 'events-none' : ''"
   >
     <Stencil
       v-if="!preview"
@@ -248,7 +247,7 @@ export default {
 
       nodes.forEach(
         node => {
-          const groupId = this.stencils?.find(i => i?.items?.find(r => r.id === node.data.id))?.id || ''
+          const groupId = this.stencils?.find(i => i?.items?.find(r => r?.id === node.data?.id))?.id || ''
           // !createNode 来源于 mixins/createNode.js
           const nodeEle = this.createNode(
             this.graph,

@@ -27,6 +27,7 @@ export default {
      */
     newGraph() {
       const graph = new Graph({
+        interacting: !this.preview,
         container: this.$refs.container,
         autoResize: true,
         scaling: { min: 0.1, max: 16 },
