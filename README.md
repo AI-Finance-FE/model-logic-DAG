@@ -99,6 +99,7 @@ export default {
 | node-click  | 点击节点时触发 | ({node, inputNodes, outputNodes}) |
 | node-add  | 节点被添加到画布时触发 | (node) |
 | linked  | 边连接时出发 | ({edge, sourceNode, targetNode}) |
+| cell-remove  | 节点、边被删除时触发 | ({ cell, index, options }) |
 
 ### Methods
 

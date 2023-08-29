@@ -84,8 +84,8 @@ export default {
             /**
              * 结束节点不能为输出port
              */
-            const targetPortGroup = targetCell.ports.items.find(p => p.id === targetPort)?.group
-            const sourcePortGroup = sourceCell.ports.items.find(p => p.id === sourcePort)?.group
+            const targetPortGroup = targetCell.ports.items.find((p) => p.id === targetPort)?.group
+            const sourcePortGroup = sourceCell.ports.items.find((p) => p.id === sourcePort)?.group
             if (targetPortGroup === 'right' || targetPortGroup === 'bottom') {
               return false
             }
@@ -114,7 +114,7 @@ export default {
             if (this.linksLimit) {
               const sourceGroupId = sourceCell.data.groupId
               const targetGroupId = targetCell.data.groupId
-              return this.links.some(link => {
+              return this.links.some((link) => {
                 return link.source === sourceGroupId && link.target === targetGroupId
               })
             }
@@ -147,8 +147,8 @@ export default {
       const dnd = new Dnd({
         target: graph,
         // 这样放置到画布上的节点 ID 和 dnd start 传入的 node ID 一致
-        getDragNode: node => node.clone({ keepId: true }),
-        getDropNode: node => node.clone({ keepId: true })
+        getDragNode: (node) => node.clone({ keepId: true }),
+        getDropNode: (node) => node.clone({ keepId: true })
       })
       this.dnd = dnd
 
@@ -184,7 +184,7 @@ export default {
        * 监听连线点击
        * 返回线段的输入和输出节点
        */
-      graph.on('edge:click', data => {
+      graph.on('edge:click', (data) => {
         const { edge } = data
         const sourceNode = data.edge.getSourceNode()
         const targetNode = data.edge.getTargetNode()
@@ -205,7 +205,7 @@ export default {
          * 得到与点击节点所有有连接关系的节点
          * 将节点分为输入和输出两组返回
          */
-        edges.forEach(edge => {
+        edges.forEach((edge) => {
           const sourceNode = edge.getSourceNode()
           const targetNode = edge.getTargetNode()
           sourceNode.id === clickNodeId && outputNodes.push(targetNode)
@@ -240,13 +240,13 @@ export default {
        */
       graph.on('blank:mouseup', () => {
         const edges = graph.getEdges()
-        edges.forEach(edge => {
+        edges.forEach((edge) => {
           if (edge.hasTool('button-remove')) {
             edge.removeTool('button-remove')
           }
         })
         const nodes = graph.getNodes()
-        nodes.forEach(node => {
+        nodes.forEach((node) => {
           if (node.hasTool('button-remove')) {
             node.removeTool('button-remove')
           }
@@ -261,6 +261,11 @@ export default {
             args: { x: 10, y: 10 }
           }
         ])
+      })
+
+      // 坚挺节点、边的删除
+      graph.on('cell:removed', ({ cell, index, options }) => {
+        this.$emit('cell-remove', { cell, index, options })
       })
     },
     /**
