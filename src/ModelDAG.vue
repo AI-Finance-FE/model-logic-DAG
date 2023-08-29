@@ -320,9 +320,6 @@ export default {
     },
     getCellById(id) {
       return this.graph.getCellById(id)
-    },
-    model(method, ...args) {
-      return this.graph[method](...args)
     }
   }
 }
