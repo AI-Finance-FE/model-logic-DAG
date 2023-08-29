@@ -320,6 +320,9 @@ export default {
     },
     getCellById(id) {
       return this.graph.getCellById(id)
+    },
+    model(method, ...args) {
+      return this.graph[method](...args)
     }
   }
 }
@@ -336,7 +339,7 @@ export default {
 
     #container {
       width: 100%;
-      height: 100%
+      height: 100%;
     }
   }
 }
